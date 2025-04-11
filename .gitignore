@@ -1,0 +1,5 @@
+# signature train dataset
+dataset/
+
+# virtual environment
+venv/
