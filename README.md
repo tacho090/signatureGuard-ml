@@ -1,0 +1,3 @@
+*Pytorch tensors*
+
+A tensor in PyTorch is essentially a multi-dimensional array that supports various operations on a GPU for fast computation. In image processing, tensors typically have a shape that reflects the image dimensions. For example, after applying transforms.ToTensor(), an image usually becomes a tensor with shape [C, H, W] where C is the number of channels (e.g., 3 for an RGB image or 1 for grayscale), H is the height, and W is the width.
