@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as functional
 
 class SignatureEmbeddingCreator(nn.Module):
     def __init__(self):
@@ -68,6 +68,7 @@ class SiameseNetworkEmbedding(nn.Module):
     def get_embedding(self, signature_image):
         # This helper method returns the embedding for a single input.
         return self.signature_embedding_model(signature_image)
+
 
 # Example usage:
 if __name__ == '__main__':
