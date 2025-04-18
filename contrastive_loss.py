@@ -18,4 +18,5 @@ class ContrastiveLoss(nn.Module):
             embedding_a, embedding_b)
         positive_loss = labels * distances.pow(2)
         negative_loss = (1 - labels) * functional.relu(self.margin - distances).pow(2)
+        # return L = y * d^2 + (1-y) * max(0, m -d )^2
         return (positive_loss + negative_loss).mean()

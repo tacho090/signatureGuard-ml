@@ -49,7 +49,11 @@ class SignatureTrainer:
         self.model.train()
         total_loss = 0.0
         for batch_idx, (img1, img2, labels) in enumerate(self.dataloader, 1):
-            img1, img2, labels = img1.to(self.device), img2.to(self.device), labels.to(self.device)
+            img1, img2, labels = (
+                img1.to(self.device),
+                img2.to(self.device),
+                labels.to(self.device)
+            )
             emb1, emb2 = self.model(img1, img2)
             loss = self.criterion(emb1, emb2, labels)
 
@@ -85,6 +89,19 @@ class Main:
             lr=1e-3
         )
         trainer.run_training(epochs=20)
+
+        # Export the trained model
+        # Save just the state_dict (recommended):
+        torch.save(
+            trainer.model.state_dict(),
+            "signature_siamese_state.pth"
+        )
+
+        # Save the entire model object:
+        torch.save(
+            trainer.model,
+            "signature_siamese_full.pth"
+        )
 
 if __name__ == "__main__":
     Main.run()
