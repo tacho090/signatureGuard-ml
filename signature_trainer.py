@@ -32,9 +32,13 @@ class SignatureTrainer:
         dataset = SignaturePairDataset(genuine_dir, forged_dir)
         self.dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-        # 2. Model, loss, optimizer
+        # 2. Model train
         self.model = SiameseNetworkEmbedding().to(device)
+
+        # 3. Contrastive Loss function
         self.criterion = ContrastiveLoss(margin=margin)
+
+        # 4. Optimizer - updates your model's weights during training
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
 
         self.device = device
