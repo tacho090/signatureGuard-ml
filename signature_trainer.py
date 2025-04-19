@@ -5,7 +5,15 @@ from torch.utils.data import DataLoader
 from contrastive_loss import ContrastiveLoss
 from data_loader import SignaturePairDataset
 from siamese_model import SiameseNetworkEmbedding
+from logger import Logger
+import logging
 
+log = Logger(
+    name=__name__,
+    level=logging.DEBUG,
+    log_to_file=True,
+    file_path="log/train.log"
+).logger
 
 class SignatureTrainer:
     def __init__(
@@ -30,16 +38,20 @@ class SignatureTrainer:
         """
 
         # 1. Dataset & DataLoader
+        log.info("1. Load dataset")
         dataset = SignaturePairDataset(genuine_dir, forged_dir)
         self.dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
         # 2. Model train
+        log.info("2. Model Train")
         self.model = SiameseNetworkEmbedding().to(device)
 
         # 3. Contrastive Loss function
+        log.info("3. Contrastive Loss Function")
         self.criterion = ContrastiveLoss(margin=margin)
 
         # 4. Optimizer - updates your model's weights during training
+        log.info("4. Optimizer - update model's weights during training")
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
 
         self.device = device
@@ -51,30 +63,39 @@ class SignatureTrainer:
         Args:
             epoch (int): Current epoch number, used for logging progress.
         """
+        log.info("Starting training loop")
         self.model.train()
         total_loss = 0.0
         for batch_idx, (img1, img2, labels) in enumerate(self.dataloader, 1):
+            log.debug("Processing images and labels")
             img1, img2, labels = (
                 img1.to(self.device),
                 img2.to(self.device),
                 labels.to(self.device)
             )
+            log.debug("Creating embeddings")
             emb1, emb2 = self.model(img1, img2)
+            log.debug("Computing loss function")
             loss = self.criterion(emb1, emb2, labels)
 
+            log.debug("Running algorithm optimizer")
             self.optimizer.zero_grad()
+            log.debug("Performing backward loss function")
             loss.backward()
+            log.debug("Processing step optimizer")
             self.optimizer.step()
 
+            log.debug("Computing total loss")
             total_loss += loss.item()
         avg_loss = total_loss / len(self.dataloader)
-        print(f"Epoch {epoch:02d}: Avg Loss = {avg_loss:.4f}")
+        log.info(f"Epoch {epoch:02d}: Avg Loss = {avg_loss:.4f}")
 
     def run_training(self, epochs: int = 10):
         """
         Execute the training loop for the specified number of epochs.
         """
         for epoch in range(1, epochs + 1):
+            log.info(f"Training epoch {epoch}")
             self.train_epoch(epoch)
 
 class Main:
@@ -97,15 +118,17 @@ class Main:
 
         # Export the trained model
         # Save just the state_dict (recommended):
+        log.info("Save model state_dict")
         torch.save(
             trainer.model.state_dict(),
-            "signature_siamese_state.pth"
+            "trained_model/signature_siamese_state.pth"
         )
 
         # Save the entire model object:
+        log.info("Save full trainer model object")
         torch.save(
             trainer.model,
-            "signature_siamese_full.pth"
+            "trained_model/signature_siamese_full.pth"
         )
 
 if __name__ == "__main__":

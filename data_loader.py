@@ -58,5 +58,9 @@ class SignaturePairDataset(Dataset):
         img1 = Image.open(path1).convert('L')  # use 'L' for grayscale; 'RGB' for color
         img2 = Image.open(path2).convert('L')
 
+        # Apply the transform to convert images to tensors
+        image1_transformed = self.transform(img1)
+        image2_transformed = self.transform(img2)
+
         label = tensor(self.labels[index], dtype=float)
-        return img1, img2, label
+        return image1_transformed, image2_transformed, label
