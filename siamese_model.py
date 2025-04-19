@@ -13,7 +13,7 @@ class SignatureEmbeddingCreator(nn.Module):
         # Convolutional blocks to learn feature representations from the input image.
         self.feature_extractor = nn.Sequential(
             # Block 1: From 3 channels to 64 feature maps
-            nn.Conv2d(3, 64, kernel_size=5, stride=1, padding=2),
+            nn.Conv2d(1, 64, kernel_size=5, stride=1, padding=2),
             # Normalizes result from previous layer
             nn.BatchNorm2d(64),
             # Introduces non-linearity into the network

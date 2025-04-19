@@ -28,6 +28,7 @@ class SignatureTrainer:
             lr (float, optional): Learning rate for the optimizer. Defaults to 1e-3.
             device (str, optional): Device to run the model on ('cpu' or 'cuda'). Defaults to GPU if available.
         """
+
         # 1. Dataset & DataLoader
         dataset = SignaturePairDataset(genuine_dir, forged_dir)
         self.dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -83,8 +84,8 @@ class Main:
         Entry point for training: set up directories, hyperparameters, and start the trainer.
         """
         # adjust paths and hyperparameters as needed
-        genuine_dir = "dataset/signatures/full_original"
-        forged_dir  = "dataset/signatures/full_forged"
+        genuine_dir = "dataset_for_training/person1/original"
+        forged_dir  = "dataset_for_training/person1/forged"
         trainer = SignatureTrainer(
             genuine_dir=genuine_dir,
             forged_dir=forged_dir,

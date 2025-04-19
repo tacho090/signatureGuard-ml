@@ -1,9 +1,10 @@
 from random import random
 
-import torchvision.transforms as transforms
+from torchvision import transforms
 from torch.utils.data import Dataset
 import os
 from torch import tensor, float
+from PIL import Image
 
 
 class SignaturePairDataset(Dataset):
@@ -16,7 +17,22 @@ class SignaturePairDataset(Dataset):
             [os.path.join(forged_dir, file) \
              for file in os.listdir(forged_dir) if file.lower().endswith(".png")]
         )
-        self.transform = transform if transform is not None else transforms.ToTensor()
+        # self.transform = transform if \
+        #     transform is not None else transforms.ToTensor()
+
+        # 0 Transform image sizes
+        # Keeps each sample at 16k pixels, so an 8–16GB GPU
+        # can process batch sizes of 16–64 without OOM.
+        # Small enough for fast data loading and augmentation on a CPU.
+        # Preserves the finer curves in a handwritten signature.
+        fixed_size = (128, 128)
+
+        self.transform = transform if \
+            transform is not None else \
+            transforms.Compose([
+                transforms.Resize(fixed_size),
+                transforms.ToTensor()
+            ])
         self.pairs = []
         self.labels = []
 
@@ -36,11 +52,11 @@ class SignaturePairDataset(Dataset):
         return len(self.pairs)
 
     def __getitem__(self, index):
-        image1, image2 = self.pairs[index]
+        path1, path2 = self.pairs[index]
 
-        # Apply the transform to convert images to tensors
-        image1_transformed = self.transform(image1)
-        image2_transformed = self.transform(image2)
+        # Load the images from disk
+        img1 = Image.open(path1).convert('L')  # use 'L' for grayscale; 'RGB' for color
+        img2 = Image.open(path2).convert('L')
 
         label = tensor(self.labels[index], dtype=float)
-        return image1_transformed, image2_transformed, label
+        return img1, img2, label
