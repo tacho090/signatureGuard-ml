@@ -1,5 +1,11 @@
-# signature train dataset
+# entire CEDAR dataset
 dataset/
 
 # virtual environment
 venv/
+
+# Trained model
+trained_model/
+
+# Logs
+log/

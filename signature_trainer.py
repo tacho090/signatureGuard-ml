@@ -95,7 +95,7 @@ class SignatureTrainer:
         Execute the training loop for the specified number of epochs.
         """
         for epoch in range(1, epochs + 1):
-            log.info(f"Training epoch {epoch}")
+            log.info(f"********Training epoch {epoch}********")
             self.train_epoch(epoch)
 
 class Main:
@@ -121,14 +121,14 @@ class Main:
         log.info("Save model state_dict")
         torch.save(
             trainer.model.state_dict(),
-            "trained_model/signature_siamese_state.pth"
+            "trained_model/signature_siamese_state_v1.pth"
         )
 
         # Save the entire model object:
         log.info("Save full trainer model object")
         torch.save(
             trainer.model,
-            "trained_model/signature_siamese_full.pth"
+            "trained_model/signature_siamese_full_v1.pth"
         )
 
 if __name__ == "__main__":
