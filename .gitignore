@@ -9,3 +9,6 @@ trained_model/
 
 # Logs
 log/
+
+# ONNX models
+onnx/
