@@ -1,4 +1,3 @@
-![Alt text](images/first_slide.jpg "Siamese Network")
 ![Alt text](images/gif_slide.svg "Siamese Network Explained")
 
 
