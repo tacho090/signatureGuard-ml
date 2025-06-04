@@ -239,7 +239,7 @@ def create_interactive_3d_visualization(embeddings, labels, categories, filename
     )
     
     # Save as interactive HTML
-    output_path = "html/signature_embeddings_interactive.html"
+    output_path = "output_html/signature_embeddings_interactive.html"
     fig.write_html(output_path)
     print(f"Interactive visualization saved to {output_path}")
     
