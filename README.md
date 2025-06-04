@@ -1,3 +1,7 @@
+![Alt text](images/first_slide.jpg "Siamese Network")
+![Alt text](images/gif_slide.svg "Siamese Network Explained")
+
+
 # SignatureGuard ML
 
 A machine learning system for signature verification and forgery detection using Siamese Neural Networks and contrastive learning.
