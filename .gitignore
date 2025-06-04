@@ -12,3 +12,7 @@ log/
 
 # ONNX models
 onnx/
+
+# Generated files
+output_html/
+output_png/

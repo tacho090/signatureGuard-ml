@@ -3,3 +3,6 @@ torchvision
 onnx
 numpy
 matplotlib
+onnxruntime
+scikit-learn
+plotly
